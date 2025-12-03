@@ -1,30 +1,30 @@
-package io.github.ackeecz.danger.junit
+package io.github.ackeecz.danger.testing
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties
 import com.fasterxml.jackson.annotation.JsonProperty
-import com.fasterxml.jackson.dataformat.xml.XmlMapper
-import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlElementWrapper
-import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty
-import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement
-import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlText
+import com.fasterxml.jackson.annotation.JsonRootName
 import systems.danger.kotlin.sdk.DangerPlugin
+import tools.jackson.dataformat.xml.XmlMapper
+import tools.jackson.dataformat.xml.annotation.JacksonXmlElementWrapper
+import tools.jackson.dataformat.xml.annotation.JacksonXmlProperty
+import tools.jackson.dataformat.xml.annotation.JacksonXmlText
 import java.io.File
 import java.io.FileInputStream
 
 /**
- * Danger-kotlin plugin for processing jUnit reports and print failures
+ * Danger-kotlin plugin for processing test reports and print failures
  * to the PR comment.
  */
-object JUnitPlugin : DangerPlugin() {
+public object TestingPlugin : DangerPlugin() {
 
-    override val id = "danger-kotlin-junit"
+    override val id: String = "danger-kotlin-testing"
 
     private var failingTestSuites: List<FailingTestSuite>? = null
 
     /**
      * Process [files] representing junit results
      */
-    fun parse(vararg files: File) {
+    public fun parse(vararg files: File) {
         val mapper = XmlMapper()
         failingTestSuites = files.mapNotNull { file ->
             FileInputStream(file).use { fileInputStream ->
@@ -58,7 +58,7 @@ object JUnitPlugin : DangerPlugin() {
     /**
      * Report parsed junit results to the PR
      */
-    fun report() {
+    public fun report() {
         failingTestSuites?.takeIf { it.isNotEmpty() }?.let { failingTestSuites ->
             context.fail("Tests have failed. See below for more information")
             val message = buildString {
@@ -80,7 +80,7 @@ object JUnitPlugin : DangerPlugin() {
 }
 
 @JsonIgnoreProperties(ignoreUnknown = true)
-@JacksonXmlRootElement(namespace = "testsuite")
+@JsonRootName(value = "testsuite")
 internal data class TestSuite(
     @field:JacksonXmlProperty val name: String = "",
     @field:JsonProperty("testcase")
