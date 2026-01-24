@@ -25,9 +25,6 @@ internal object FileFinder {
                     fileExtension = fileExtension,
                 )
             }
-            .ifEmpty {
-                throw NoFilesFoundException("No report files found. Check your configuration.")
-            }
     }
 
     private fun getBuildFolders(

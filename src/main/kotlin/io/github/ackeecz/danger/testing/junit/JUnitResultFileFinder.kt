@@ -1,6 +1,7 @@
 package io.github.ackeecz.danger.testing.junit
 
 import io.github.ackeecz.danger.testing.FileFinder
+import io.github.ackeecz.danger.testing.NoFilesFoundException
 import java.io.File
 import java.nio.file.Path
 
@@ -18,6 +19,8 @@ internal object JUnitResultFileFinder {
             reportFilesFolderPath = config.testResultsFolderPath,
             filePrefix = config.resultFileNamePrefix,
             fileExtension = RESULT_FILE_EXTENSION,
-        )
+        ).ifEmpty {
+            throw NoFilesFoundException("No test results found. Check your configuration.")
+        }
     }
 }

@@ -11,3 +11,7 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 replaced with `findAndProcessJUnitReports`. On top of previous files parsing and reporting this method now even finds 
 all JUnit reports. You can now provide an optional config to modify some functionality if needed. 
 See documentation for more details.
+
+### Added
+- `TestingPlugin.findAndProcessSnapshotReports` method for processing failed snapshot delta image files and 
+reporting them to the pull request.

@@ -4,6 +4,10 @@
 
 Plugin for [danger-kotlin](https://github.com/danger/kotlin) that processes test results.
 
+Although this plugin is open for general use, it’s primarily designed as an internal tool to help us share Danger 
+testing logic across our Ackee projects. Because of that, some defaults and configuration choices are intentionally 
+opinionated to better support our internal workflows.
+
 ## Installation
 
 Put
@@ -26,10 +30,15 @@ and then you can use it through its public methods
 
 ```kotlin
 TestingPlugin.findAndProcessJUnitReports(JUnitConfig)
+TestingPlugin.findAndProcessSnapshotReports(SnapshotConfig)
 ```
 
 `findAndProcessJUnitReports` method finds and parses XML outputs of JUnit tests and reports failures to the pull request.
 It accepts an optional configuration object that allows to customize some behavior.
+
+`findAndProcessSnapshotReports` method finds and processes failed snapshot delta image files and reports them to the pull request.
+It accepts an optional configuration object that allows to customize some behavior.
+It is necessary to call this method only from the GitLab CI pipeline.
 
 Example Dangerfile
 
@@ -38,6 +47,7 @@ Example Dangerfile
 
 import io.github.ackeecz.danger.testing.TestingPlugin
 import io.github.ackeecz.danger.testing.junit.JUnitConfig
+import io.github.ackeecz.danger.testing.snapshot.SnapshotConfig        
 
 import systems.danger.kotlin.danger
 import systems.danger.kotlin.register
@@ -53,6 +63,10 @@ danger(args) {
     TestingPlugin.findAndProcessJUnitReports(
         // Optional config
         JUnitConfig()
+    )
+    TestingPlugin.findAndProcessSnapshotReports(
+        // Optional config
+        SnapshotConfig()
     )
 }
 ```
