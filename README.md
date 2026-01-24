@@ -1,4 +1,4 @@
-[ ![Maven Central](https://maven-badges.herokuapp.com/maven-central/io.github.ackeecz/danger-kotlin-testing/badge.svg)](https://maven-badges.herokuapp.com/maven-central/io.github.ackeecz/danger-kotlin-testing)
+[![Maven Central](https://img.shields.io/maven-central/v/io.github.ackeecz/danger-kotlin-testing)](https://central.sonatype.com/artifact/io.github.ackeecz/danger-kotlin-testing)
 
 # danger-kotlin testing plugin
 
