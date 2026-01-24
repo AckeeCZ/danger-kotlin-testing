@@ -1,15 +1,15 @@
-[ ![Maven Central](https://maven-badges.herokuapp.com/maven-central/io.github.ackeecz/danger-kotlin-junit/badge.svg)](https://maven-badges.herokuapp.com/maven-central/io.github.ackeecz/danger-kotlin-junit)
+[ ![Maven Central](https://maven-badges.herokuapp.com/maven-central/io.github.ackeecz/danger-kotlin-testing/badge.svg)](https://maven-badges.herokuapp.com/maven-central/io.github.ackeecz/danger-kotlin-testing)
 
-# danger-kotlin junit plugin
+# danger-kotlin testing plugin
 
-Plugin for [danger-kotlin](https://github.com/danger/kotlin) parsing and reporting JUnit results.
+Plugin for [danger-kotlin](https://github.com/danger/kotlin) that processes test results.
 
 ## Installation
 
 Put
 
 ```kotlin
-@file:DependsOn("io.github.ackeecz:danger-kotlin-junit:x.y.z")
+@file:DependsOn("io.github.ackeecz:danger-kotlin-testing:x.y.z")
 ```
 
 to the top of your Dangerfile
@@ -19,14 +19,14 @@ to the top of your Dangerfile
 First you need to register the plugin via
 
 ```kotlin
-register plugin JUnitPlugin
+register plugin TestingPlugin
 ```
 
 and then you can use it through its public methods
 
 ```kotlin
-JUnitPlugin.parse(junitReportFile)
-JUnitPlugin.report()
+TestingPlugin.parse(junitReportFile)
+TestingPlugin.report()
 ```
 
 `parse` method accepts varargs of files pointing to the junit reports and parses them to internal representation.
@@ -36,9 +36,9 @@ JUnitPlugin.report()
 Example Dangerfile
 
 ```kotlin
-@file:DependsOn("io.github.ackeecz:danger-kotlin-junit:x.y.z")
+@file:DependsOn("io.github.ackeecz:danger-kotlin-testing:x.y.z")
 
-import io.github.ackeecz.danger.junit.JUnitPlugin
+import io.github.ackeecz.danger.testing.TestingPlugin
 
 import systems.danger.kotlin.danger
 import systems.danger.kotlin.register
@@ -48,7 +48,7 @@ import java.nio.file.Paths
 import java.util.function.BiPredicate
 import java.util.stream.Collectors
 
-register plugin JUnitPlugin
+register plugin TestingPlugin
 
 danger(args) {
     val junitReports = Files.find(Paths.get(""), 10, BiPredicate { path, _ ->
@@ -56,8 +56,8 @@ danger(args) {
         fileName.startsWith("TEST") && fileName.endsWith("xml")
     }).map { it.toFile() }.collect(Collectors.toList())
 
-    JUnitPlugin.parse(*junitFiles.toTypedArray())
-    JUnitPlugin.report()
+    TestingPlugin.parse(*junitFiles.toTypedArray())
+    TestingPlugin.report()
 }
 ```
 

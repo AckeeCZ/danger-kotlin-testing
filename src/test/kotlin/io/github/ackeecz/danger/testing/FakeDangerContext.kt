@@ -1,9 +1,9 @@
-package io.github.ackeecz.danger.junit
+package io.github.ackeecz.danger.testing
 
 import systems.danger.kotlin.sdk.DangerContext
 import systems.danger.kotlin.sdk.Violation
 
-class FakeDangerContext : DangerContext {
+internal class FakeDangerContext : DangerContext {
 
     override var fails: MutableList<Violation> = mutableListOf()
     override val markdowns: MutableList<Violation> = mutableListOf()
