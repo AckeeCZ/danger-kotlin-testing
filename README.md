@@ -25,13 +25,11 @@ register plugin TestingPlugin
 and then you can use it through its public methods
 
 ```kotlin
-TestingPlugin.parse(junitReportFile)
-TestingPlugin.report()
+TestingPlugin.findAndProcessJUnitReports(JUnitConfig)
 ```
 
-`parse` method accepts varargs of files pointing to the junit reports and parses them to internal representation.
-
-`report` methods will process parsed results and reports them to pull request comments.
+`findAndProcessJUnitReports` method finds and parses XML outputs of JUnit tests and reports failures to the pull request.
+It accepts an optional configuration object that allows to customize some behavior.
 
 Example Dangerfile
 
@@ -39,6 +37,7 @@ Example Dangerfile
 @file:DependsOn("io.github.ackeecz:danger-kotlin-testing:x.y.z")
 
 import io.github.ackeecz.danger.testing.TestingPlugin
+import io.github.ackeecz.danger.testing.junit.JUnitConfig
 
 import systems.danger.kotlin.danger
 import systems.danger.kotlin.register
@@ -51,15 +50,9 @@ import java.util.stream.Collectors
 register plugin TestingPlugin
 
 danger(args) {
-    val junitReports = Files.find(Paths.get(""), 10, BiPredicate { path, _ ->
-        val fileName = path.toFile().name
-        fileName.startsWith("TEST") && fileName.endsWith("xml")
-    }).map { it.toFile() }.collect(Collectors.toList())
-
-    TestingPlugin.parse(*junitFiles.toTypedArray())
-    TestingPlugin.report()
+    TestingPlugin.findAndProcessJUnitReports(
+        // Optional config
+        JUnitConfig()
+    )
 }
 ```
-
-This will find all files in the depth of 10 relative to current directory that matches the junit report files naming,
-and it will pass them to the plugin for processing.
