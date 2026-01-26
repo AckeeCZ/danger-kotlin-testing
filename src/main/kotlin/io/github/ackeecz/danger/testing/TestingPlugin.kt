@@ -22,7 +22,7 @@ public object TestingPlugin : DangerPlugin() {
      * @param config Config of report processing
      */
     public fun findAndProcessJUnitReports(config: JUnitConfig = JUnitConfig()) {
-        val reportFiles = JUnitResultFileFinder.findFiles(
+        val reportFiles = JUnitResultFileFinder(context).findFiles(
             rootDirectoryPath = Paths.get(""),
             config = config.discovery,
         )

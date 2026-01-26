@@ -6,8 +6,14 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
-### Changed
 ### Added
+### Fixed
+### Changed
+
+## [1.0.2] - 2026-01-26
+### Fixed
+- Do not throw exception on missing JUnit test results, but warn only. Test results might be missing even in the case
+when the compilation of tests fails and not only on CI misconfiguration.
 
 ## [1.0.1] - 2026-01-26
 ### Changed

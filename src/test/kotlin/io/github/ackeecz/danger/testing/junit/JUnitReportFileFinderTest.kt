@@ -1,26 +1,29 @@
 package io.github.ackeecz.danger.testing.junit
 
 import io.github.ackeecz.danger.testing.BuildFoldersMatcher
+import io.github.ackeecz.danger.testing.FakeDangerContext
 import io.github.ackeecz.danger.testing.NoFilesFoundException
 import io.github.ackeecz.danger.testing.util.rootTempTestDir
 import io.kotest.assertions.throwables.shouldNotThrow
-import io.kotest.assertions.throwables.shouldThrow
 import io.kotest.core.TestConfiguration
 import io.kotest.core.spec.style.FunSpec
 import io.kotest.matchers.collections.shouldContainExactlyInAnyOrder
 import io.kotest.matchers.collections.shouldHaveSize
+import io.kotest.matchers.shouldBe
 import java.io.File
 import java.nio.file.Paths
 
 private const val DEFAULT_TEST_RESULTS_FOLDER = "test-results"
 private const val DEFAULT_FILE_PREFIX = "TEST-"
 
+private lateinit var dangerContext: FakeDangerContext
 private lateinit var underTest: JUnitResultFileFinder
 
 internal class JUnitReportFileFinderTest : FunSpec({
 
     beforeEach {
-        underTest = JUnitResultFileFinder
+        dangerContext = FakeDangerContext()
+        underTest = JUnitResultFileFinder(dangerContext)
     }
 
     test("find .xml files with $DEFAULT_FILE_PREFIX prefix in $DEFAULT_TEST_RESULTS_FOLDER folder when using default config") {
@@ -156,13 +159,14 @@ internal class JUnitReportFileFinderTest : FunSpec({
         actualFiles.shouldContainExactlyInAnyOrder(expectedFiles)
     }
 
-    test("fail when no files found") {
-        shouldThrow<NoFilesFoundException> {
-            underTest.findFiles(
-                rootDirectoryPath = createTestResultsDir().toPath(),
-                config = JUnitConfig.Discovery(),
-            )
-        }
+    test("warn when no files found") {
+        underTest.findFiles(
+            rootDirectoryPath = createTestResultsDir().toPath(),
+            config = JUnitConfig.Discovery(),
+        )
+
+        dangerContext.warnings shouldHaveSize 1
+        dangerContext.warnings.first().message shouldBe "No JUnit test results found"
     }
 
     test("do not fail when folder without parent is passed as root directory for search") {
