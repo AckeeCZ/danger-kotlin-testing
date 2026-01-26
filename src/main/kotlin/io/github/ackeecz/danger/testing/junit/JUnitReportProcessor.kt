@@ -52,7 +52,7 @@ internal class JUnitReportProcessor(private val dangerContext: DangerContext) {
     private fun report(failingTestSuites: List<FailingTestSuite>) {
         failingTestSuites.takeIf { it.isNotEmpty() }?.let { failingTestSuites ->
             val message = buildString {
-                append("## ❌ Failed Tests: \n\n")
+                append("## ❌ Failed tests \n\n")
                 failingTestSuites.forEach { testSuite ->
                     append("### `${testSuite.className}`\n\n")
                     testSuite.failingTestCases.forEach { testCase ->

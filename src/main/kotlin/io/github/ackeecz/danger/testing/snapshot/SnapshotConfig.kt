@@ -37,14 +37,14 @@ public class SnapshotConfig(
      * @param snapshotJobIdFilePath Path to a file containing the ID of the snapshot test job. Defaults to the value
      * of the SNAPSHOT_TEST_JOB_ID_FILE environment variable.
      * @param failedSnapshotsHeader Markdown header to use for the failed snapshots report.
-     * Defaults to "## Failed snapshots".
+     * Defaults to "## ❌ Failed snapshots".
      */
     public class DeltaReport(
         internal val host: String = "gitlab.ack.ee",
         internal val projectGroupName: String = System.getenv("CI_PROJECT_NAMESPACE") ?: error("CI_PROJECT_NAMESPACE env not set"),
         internal val projectName: String = System.getenv("CI_PROJECT_NAME") ?: error("CI_PROJECT_NAME env not set"),
         snapshotJobIdFilePath: String = System.getenv("SNAPSHOT_TEST_JOB_ID_FILE") ?: error("SNAPSHOT_TEST_JOB_ID_FILE env not set"),
-        internal val failedSnapshotsHeader: MarkdownHeader = MarkdownHeader(MarkdownHeader.Level.H2, "Failed snapshots"),
+        internal val failedSnapshotsHeader: MarkdownHeader = MarkdownHeader(MarkdownHeader.Level.H2, "❌ Failed snapshots"),
     ) {
 
         internal val snapshotJobId: String = readSnapshotJobId(snapshotJobIdFilePath)

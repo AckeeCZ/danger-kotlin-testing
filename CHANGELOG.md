@@ -9,6 +9,10 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 ### Changed
 ### Added
 
+## [1.0.1] - 2026-01-26
+### Changed
+- Update Markdown headers for failed unit and snapshot tests
+
 ## [1.0.0] - 2026-01-24
 ### Changed
 - Breaking change of `JUnitPlugin` object to `TestingPlugin` object. Also, previous methods `parse` and `report` were
